@@ -12,7 +12,7 @@ resource "aws_subnet" "boundary_db_demo_subnet" {
   vpc_id                  = aws_vpc.boundary_db_demo_vpc.id
   cidr_block              = var.aws_subnet_cidr
   map_public_ip_on_launch = true
-  availability_zone       = var.availability_zone
+  availability_zone       = data.aws_availability_zones.available.names[0]
   tags = {
     Name = "Boundary DB Demo Public Subnet"
   }
@@ -22,7 +22,7 @@ resource "aws_subnet" "boundary_db_demo_subnet2" {
   vpc_id                  = aws_vpc.boundary_db_demo_vpc.id
   cidr_block              = var.aws_subnet_cidr2
   map_public_ip_on_launch = true
-  availability_zone       = var.availability_zone2
+  availability_zone       = data.aws_availability_zones.available.names[1]
   tags = {
     "Name" = "Boundary DB Demo Public Subnet 2"
   }

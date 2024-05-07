@@ -1,3 +1,11 @@
+data "aws_iam_user" "boundary" {
+  user_name = var.boundary_aws_user
+}
+
+resource "aws_iam_access_key" "boundary" {
+  user = data.aws_iam_user.boundary.user_name
+}
+
 # Boundary config for the EC2 target
 resource "boundary_host_catalog_plugin" "aws_plugin" {
   name        = "AWS Catalogue"
@@ -5,13 +13,13 @@ resource "boundary_host_catalog_plugin" "aws_plugin" {
   scope_id    = boundary_scope.project.id
   plugin_name = "aws"
   attributes_json = jsonencode({
-    "region" = "eu-west-2",
+    "region" = data.aws_region.current.name,
   "disable_credential_rotation" = true })
 
 
   secrets_json = jsonencode({
-    "access_key_id"     = var.aws_access,
-    "secret_access_key" = var.aws_secret
+    "access_key_id"     = aws_iam_access_key.boundary.id,
+    "secret_access_key" = aws_iam_access_key.boundary.secret
   })
 }
 
@@ -54,7 +62,7 @@ resource "boundary_target" "aws" {
     boundary_host_set_plugin.aws_prod.id,
   ]
   # enable_session_recording                   = true
-  # storage_bucket_id                          = aws_s3_bucket.boundary_session_recording_bucket.id
+  # storage_bucket_id                          = data.aws_s3_bucket.boundary_session_recording_bucket.id
   injected_application_credential_source_ids = [boundary_credential_library_vault_ssh_certificate.vault_ssh_cert.id]
 }
 

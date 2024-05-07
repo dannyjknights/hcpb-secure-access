@@ -1,7 +1,7 @@
 resource "aws_instance" "boundary_public_target" {
   ami               = "ami-09ee0944866c73f62"
   instance_type     = "t2.micro"
-  availability_zone = "eu-west-2b"
+  availability_zone = data.aws_region.current.name
   user_data_base64  = data.cloudinit_config.ssh_trusted_ca.rendered
 
   network_interface {

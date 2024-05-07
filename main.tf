@@ -26,7 +26,7 @@ terraform {
 
 # Declare the provider for the AWS resource to be managed by Terraform
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-west-1"
 }
 
 provider "vault" {
@@ -39,4 +39,10 @@ provider "boundary" {
   auth_method_login_name = var.password_auth_method_login_name
   auth_method_password   = var.password_auth_method_password
 
+}
+
+
+data "aws_region" "current" {}
+data "aws_availability_zones" "available" {
+  state = "available"
 }

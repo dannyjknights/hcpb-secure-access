@@ -10,18 +10,18 @@ variable "password_auth_method_password" {
   type = string
 }
 
-variable "aws_access" {
-  type = string
-}
+//variable "aws_access" {
+//  type = string
+//}
+//
+//variable "aws_secret" {
+//  type = string
+//}
 
-variable "aws_secret" {
-  type = string
-}
-
-variable "aws_region" {
-  type    = string
-  default = "eu-west-2"
-}
+//variable "aws_region" {
+//  type    = string
+//  default = "data.aws_region.current.name"
+//}
 
 variable "aws_vpc_cidr" {
   type        = string
@@ -39,16 +39,16 @@ variable "aws_subnet_cidr2" {
   default = "172.31.33.0/24"
 }
 
-variable "availability_zone" {
-  type    = string
-  default = "eu-west-2b"
-}
+//variable "availability_zone" {
+//  type    = string
+//  default = "data.aws_region.current.nameb"
+//}
 
-variable "availability_zone2" {
-  description = "Second AZ for RDS deployment"
-  type        = string
-  default     = "eu-west-2c"
-}
+//variable "availability_zone2" {
+//  description = "Second AZ for RDS deployment"
+//  type        = string
+//  default     = "data.aws_region.current.namec"
+//}
 
 variable "vault_addr" {
   type = string
@@ -73,7 +73,7 @@ variable "db_name" {
 }
 
 variable "s3_bucket_name" {
-  description = "Name of the S3 bucket"
+  description = "Name of the S3 bucket, should be created outside of Terraform"
   type        = string
 }
 
@@ -99,3 +99,9 @@ variable "rdp_admin_username" {
   description = "The admin username for RDP target"
   default     = "Administrator"
 }
+
+variable "boundary_aws_user" {
+  type        = string
+  description = "The username of the AWS user for the Boundary application, should be created outside of Terraform"
+}
+
