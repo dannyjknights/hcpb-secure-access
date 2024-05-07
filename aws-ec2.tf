@@ -1,7 +1,7 @@
 resource "aws_instance" "boundary_public_target" {
-  ami               = "ami-09ee0944866c73f62"
-  instance_type     = "t2.micro"
-  availability_zone = data.aws_region.current.name
+  ami               = data.aws_ami.linux.id
+  instance_type     = "t3.micro"
+  //subnet_id         = aws_subnet.boundary_db_demo_subnet.id
   user_data_base64  = data.cloudinit_config.ssh_trusted_ca.rendered
 
   network_interface {

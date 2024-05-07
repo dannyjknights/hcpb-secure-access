@@ -1,25 +1,4 @@
 
-# Windows Target
-data "aws_ami" "windows" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["Windows_Server-2022-English-Full-Base-*"]
-  }
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 resource "aws_instance" "rdp-target" {
   ami           = data.aws_ami.windows.id
   instance_type = "t3.small"

@@ -73,7 +73,7 @@ variable "db_name" {
 }
 
 variable "s3_bucket_name" {
-  description = "Name of the S3 bucket, should be created outside of Terraform"
+  description = "Name of the S3 bucket, should be created outside of Terraform. Prevents naming conflicts if destroyed"
   type        = string
 }
 

@@ -118,14 +118,13 @@ parameter. The depends_on argument is set to ensure that the networking is estab
 and that the boundary_worker resource also completes, to ensure the token is generated first.
 */
 resource "aws_instance" "boundary_self_managed_worker" {
-  ami                         = "ami-09ee0944866c73f62"
-  instance_type               = "t2.micro"
-  availability_zone           = data.aws_region.current.name
+  ami                         = data.aws_ami.linux.id
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.boundary_db_demo_subnet.id
   user_data_replace_on_change = true
   user_data_base64            = data.cloudinit_config.boundary_self-managed_worker.rendered
   //key_name                    = "boundary"
   private_ip             = "172.31.32.93"
-  subnet_id              = aws_subnet.boundary_db_demo_subnet.id
   vpc_security_group_ids = [aws_security_group.boundary_ingress_worker_ssh.id]
   tags = {
     Name = "Boundary Self-Managed Worker"
