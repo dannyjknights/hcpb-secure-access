@@ -80,52 +80,20 @@ WORKER_HCL_CONFIG
   }
 }
 
-/* This data block pulls in all the different parts of the configuration to be deployed.
-These are executed in the order that they are written. Firstly, the boundary-worker binary
-will be called. Secondly, the configuration specified in the locals block will be called.
-Lastly the boundary-worker process is started using the pki-worker.hcl file.
-*/
-data "cloudinit_config" "boundary_self-managed_worker" {
-  gzip          = false
-  base64_encode = true
 
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOF
-      #!/bin/bash
-      sudo yum install -y shadow-utils
-      sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-      sudo yum -y install boundary-enterprise
-      curl 'https://api.ipify.org?format=txt' > /tmp/ip
-      sudo mkdir /etc/boundary.d/sessionrecord
-  EOF
-  }
-  part {
-    content_type = "text/cloud-config"
-    content      = yamlencode(local.cloudinit_config_boundary_self-managed_worker)
-  }
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOF
-    #!/bin/bash
-    sudo boundary server -config="/etc/boundary.d/pki-worker.hcl"
-    EOF
-  }
-}
 
 /* Create the Boundary worker instance and specify the data block in the user_data_base64
 parameter. The depends_on argument is set to ensure that the networking is establish first
 and that the boundary_worker resource also completes, to ensure the token is generated first.
 */
 resource "aws_instance" "boundary_self_managed_worker" {
-  ami                         = "ami-09ee0944866c73f62"
-  instance_type               = "t2.micro"
-  availability_zone           = "eu-west-2b"
+  ami                         = data.aws_ami.linux.id
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.boundary_db_demo_subnet.id
   user_data_replace_on_change = true
   user_data_base64            = data.cloudinit_config.boundary_self-managed_worker.rendered
   //key_name                    = "boundary"
   private_ip             = "172.31.32.93"
-  subnet_id              = aws_subnet.boundary_db_demo_subnet.id
   vpc_security_group_ids = [aws_security_group.boundary_ingress_worker_ssh.id]
   tags = {
     Name = "Boundary Self-Managed Worker"

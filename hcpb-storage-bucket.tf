@@ -3,7 +3,7 @@
 #   scope_id        = "global"
 #   plugin_name     = "aws"
 #   bucket_name     = "boundary-s3-bucket"
-#   attributes_json = jsonencode({ "region" = "eu-west-2", "disable_credential_rotation" = true })
+#   attributes_json = jsonencode({ "region" = data.aws_region.current.name, "disable_credential_rotation" = true })
 
 #   secrets_json = jsonencode({
 #     "access_key_id"     = var.aws_access,
