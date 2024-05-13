@@ -1,6 +1,4 @@
-data "aws_iam_user" "boundary" {
-  user_name = var.boundary_aws_user
-}
+
 
 resource "aws_iam_access_key" "boundary" {
   user = data.aws_iam_user.boundary.user_name

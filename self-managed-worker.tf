@@ -80,38 +80,7 @@ WORKER_HCL_CONFIG
   }
 }
 
-/* This data block pulls in all the different parts of the configuration to be deployed.
-These are executed in the order that they are written. Firstly, the boundary-worker binary
-will be called. Secondly, the configuration specified in the locals block will be called.
-Lastly the boundary-worker process is started using the pki-worker.hcl file.
-*/
-data "cloudinit_config" "boundary_self-managed_worker" {
-  gzip          = false
-  base64_encode = true
 
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOF
-      #!/bin/bash
-      sudo yum install -y shadow-utils
-      sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-      sudo yum -y install boundary-enterprise
-      curl 'https://api.ipify.org?format=txt' > /tmp/ip
-      sudo mkdir /etc/boundary.d/sessionrecord
-  EOF
-  }
-  part {
-    content_type = "text/cloud-config"
-    content      = yamlencode(local.cloudinit_config_boundary_self-managed_worker)
-  }
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOF
-    #!/bin/bash
-    sudo boundary server -config="/etc/boundary.d/pki-worker.hcl"
-    EOF
-  }
-}
 
 /* Create the Boundary worker instance and specify the data block in the user_data_base64
 parameter. The depends_on argument is set to ensure that the networking is establish first

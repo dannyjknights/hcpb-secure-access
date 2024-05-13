@@ -10,19 +10,6 @@ variable "password_auth_method_password" {
   type = string
 }
 
-//variable "aws_access" {
-//  type = string
-//}
-//
-//variable "aws_secret" {
-//  type = string
-//}
-
-//variable "aws_region" {
-//  type    = string
-//  default = "data.aws_region.current.name"
-//}
-
 variable "aws_vpc_cidr" {
   type        = string
   description = "The AWS Region CIDR range to assign to the VPC"
@@ -38,17 +25,6 @@ variable "aws_subnet_cidr2" {
   type    = string
   default = "172.31.33.0/24"
 }
-
-//variable "availability_zone" {
-//  type    = string
-//  default = "data.aws_region.current.nameb"
-//}
-
-//variable "availability_zone2" {
-//  description = "Second AZ for RDS deployment"
-//  type        = string
-//  default     = "data.aws_region.current.namec"
-//}
 
 variable "vault_addr" {
   type = string
@@ -102,6 +78,6 @@ variable "rdp_admin_username" {
 
 variable "boundary_aws_user" {
   type        = string
-  description = "The username of the AWS user for the Boundary application, should be created outside of Terraform"
+  description = "The username of the AWS user for the Boundary application, To satisfy internal security requirements this should be created outside of Terraform"
 }
 

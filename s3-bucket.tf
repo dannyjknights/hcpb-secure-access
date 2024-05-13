@@ -1,6 +1,4 @@
-data "aws_s3_bucket" "boundary_session_recording_bucket" {
-  bucket = var.s3_bucket_name
-}
+
 
 //resource "aws_s3_bucket" "boundary_session_recording_bucket" {
 //  bucket        = var.s3_bucket_name

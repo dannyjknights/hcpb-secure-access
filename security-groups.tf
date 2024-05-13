@@ -1,7 +1,3 @@
-# Data block to grab current IP and add into SG rules
-data "http" "current" {
-  url = "https://api.ipify.org"
-}
 
 # These SG rules need tidying up!
 resource "aws_security_group" "allow_all" {

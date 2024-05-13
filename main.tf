@@ -3,23 +3,23 @@ terraform {
   required_providers {
     boundary = {
       source  = "hashicorp/boundary"
-      version = ">=1.0.7"
+      version = ">=1.1.15"
     }
     http = {
       source  = "hashicorp/http"
-      version = ">=3.2.1"
+      version = ">=3.4.2"
     }
     cloudinit = {
       source  = "hashicorp/cloudinit"
-      version = ">=2.3.2"
+      version = ">=2.3.4"
     }
     hcp = {
       source  = "hashicorp/hcp"
-      version = ">=0.56.0"
+      version = ">=0.89.0"
     }
     tls = {
       source  = "hashicorp/tls"
-      version = ">=4.0.4"
+      version = ">=4.0.5"
     }
   }
 }
@@ -41,8 +41,3 @@ provider "boundary" {
 
 }
 
-
-data "aws_region" "current" {}
-data "aws_availability_zones" "available" {
-  state = "available"
-}
